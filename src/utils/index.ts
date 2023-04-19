@@ -99,7 +99,7 @@ export function loadTransaction(event: ethereum.Event): Transaction {
   }
   transaction.blockNumber = event.block.number
   transaction.timestamp = event.block.timestamp
-  transaction.gasUsed = event.transaction.gasUsed
+  transaction.gasUsed = event.transaction.gasLimit // TODO: not gas used
   transaction.gasPrice = event.transaction.gasPrice
   transaction.save()
   return transaction as Transaction

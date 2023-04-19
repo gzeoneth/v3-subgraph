@@ -34,8 +34,8 @@ export function updateUniswapDayData(event: ethereum.Event): UniswapDayData {
     uniswapDayData.volumeUSDUntracked = ZERO_BD
     uniswapDayData.feesUSD = ZERO_BD
   }
-  uniswapDayData.tvlUSD = uniswap.totalValueLockedUSD
-  uniswapDayData.txCount = uniswap.txCount
+  uniswapDayData.tvlUSD = uniswap!.totalValueLockedUSD
+  uniswapDayData.txCount = uniswap!.txCount
   uniswapDayData.save()
   return uniswapDayData as UniswapDayData
 }
@@ -53,32 +53,32 @@ export function updatePoolDayData(event: ethereum.Event): PoolDayData {
   if (poolDayData === null) {
     poolDayData = new PoolDayData(dayPoolID)
     poolDayData.date = dayStartTimestamp
-    poolDayData.pool = pool.id
+    poolDayData.pool = pool!.id
     // things that dont get initialized always
     poolDayData.volumeToken0 = ZERO_BD
     poolDayData.volumeToken1 = ZERO_BD
     poolDayData.volumeUSD = ZERO_BD
     poolDayData.feesUSD = ZERO_BD
     poolDayData.txCount = ZERO_BI
-    poolDayData.open = pool.token0Price
-    poolDayData.high = pool.token0Price
-    poolDayData.low = pool.token0Price
-    poolDayData.close = pool.token0Price
+    poolDayData.open = pool!.token0Price
+    poolDayData.high = pool!.token0Price
+    poolDayData.low = pool!.token0Price
+    poolDayData.close = pool!.token0Price
   }
 
-  if (pool.token0Price.gt(poolDayData.high)) {
-    poolDayData.high = pool.token0Price
+  if (pool!.token0Price.gt(poolDayData.high)) {
+    poolDayData.high = pool!.token0Price
   }
-  if (pool.token0Price.lt(poolDayData.low)) {
-    poolDayData.low = pool.token0Price
+  if (pool!.token0Price.lt(poolDayData.low)) {
+    poolDayData.low = pool!.token0Price
   }
 
-  poolDayData.liquidity = pool.liquidity
-  poolDayData.sqrtPrice = pool.sqrtPrice
-  poolDayData.token0Price = pool.token0Price
-  poolDayData.token1Price = pool.token1Price
-  poolDayData.tick = pool.tick
-  poolDayData.tvlUSD = pool.totalValueLockedUSD
+  poolDayData.liquidity = pool!.liquidity
+  poolDayData.sqrtPrice = pool!.sqrtPrice
+  poolDayData.token0Price = pool!.token0Price
+  poolDayData.token1Price = pool!.token1Price
+  poolDayData.tick = pool!.tick
+  poolDayData.tvlUSD = pool!.totalValueLockedUSD
   poolDayData.txCount = poolDayData.txCount.plus(ONE_BI)
   poolDayData.save()
 
@@ -98,33 +98,33 @@ export function updatePoolHourData(event: ethereum.Event): PoolHourData {
   if (poolHourData === null) {
     poolHourData = new PoolHourData(hourPoolID)
     poolHourData.periodStartUnix = hourStartUnix
-    poolHourData.pool = pool.id
+    poolHourData.pool = pool!.id
     // things that dont get initialized always
     poolHourData.volumeToken0 = ZERO_BD
     poolHourData.volumeToken1 = ZERO_BD
     poolHourData.volumeUSD = ZERO_BD
     poolHourData.txCount = ZERO_BI
     poolHourData.feesUSD = ZERO_BD
-    poolHourData.open = pool.token0Price
-    poolHourData.high = pool.token0Price
-    poolHourData.low = pool.token0Price
-    poolHourData.close = pool.token0Price
+    poolHourData.open = pool!.token0Price
+    poolHourData.high = pool!.token0Price
+    poolHourData.low = pool!.token0Price
+    poolHourData.close = pool!.token0Price
   }
 
-  if (pool.token0Price.gt(poolHourData.high)) {
-    poolHourData.high = pool.token0Price
+  if (pool!.token0Price.gt(poolHourData.high)) {
+    poolHourData.high = pool!.token0Price
   }
-  if (pool.token0Price.lt(poolHourData.low)) {
-    poolHourData.low = pool.token0Price
+  if (pool!.token0Price.lt(poolHourData.low)) {
+    poolHourData.low = pool!.token0Price
   }
 
-  poolHourData.liquidity = pool.liquidity
-  poolHourData.sqrtPrice = pool.sqrtPrice
-  poolHourData.token0Price = pool.token0Price
-  poolHourData.token1Price = pool.token1Price
-  poolHourData.close = pool.token0Price
-  poolHourData.tick = pool.tick
-  poolHourData.tvlUSD = pool.totalValueLockedUSD
+  poolHourData.liquidity = pool!.liquidity
+  poolHourData.sqrtPrice = pool!.sqrtPrice
+  poolHourData.token0Price = pool!.token0Price
+  poolHourData.token1Price = pool!.token1Price
+  poolHourData.close = pool!.token0Price
+  poolHourData.tick = pool!.tick
+  poolHourData.tvlUSD = pool!.totalValueLockedUSD
   poolHourData.txCount = poolHourData.txCount.plus(ONE_BI)
   poolHourData.save()
 
@@ -141,7 +141,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
     .toString()
     .concat('-')
     .concat(dayID.toString())
-  let tokenPrice = token.derivedETH.times(bundle.ethPriceUSD)
+  let tokenPrice = token.derivedETH.times(bundle!.ethPriceUSD)
 
   let tokenDayData = TokenDayData.load(tokenDayID)
   if (tokenDayData === null) {
@@ -167,7 +167,7 @@ export function updateTokenDayData(token: Token, event: ethereum.Event): TokenDa
   }
 
   tokenDayData.close = tokenPrice
-  tokenDayData.priceUSD = token.derivedETH.times(bundle.ethPriceUSD)
+  tokenDayData.priceUSD = token.derivedETH.times(bundle!.ethPriceUSD)
   tokenDayData.totalValueLocked = token.totalValueLocked
   tokenDayData.totalValueLockedUSD = token.totalValueLockedUSD
   tokenDayData.save()
@@ -185,7 +185,7 @@ export function updateTokenHourData(token: Token, event: ethereum.Event): TokenH
     .concat('-')
     .concat(hourIndex.toString())
   let tokenHourData = TokenHourData.load(tokenHourID)
-  let tokenPrice = token.derivedETH.times(bundle.ethPriceUSD)
+  let tokenPrice = token.derivedETH.times(bundle!.ethPriceUSD)
 
   if (tokenHourData === null) {
     tokenHourData = new TokenHourData(tokenHourID)
