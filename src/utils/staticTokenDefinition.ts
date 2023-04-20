@@ -2,7 +2,7 @@ import {
   Address,
   BigInt,
 } from "@graphprotocol/graph-ts"
-
+  
 // Initialize a Token Definition with the attributes
 export class StaticTokenDefinition {
   address : Address
@@ -59,5 +59,5 @@ export class StaticTokenDefinition {
     // If not found, return null
     return null
   }
-  
+
 }
